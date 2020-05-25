@@ -1,7 +1,7 @@
 #Scrape http://redditlist.com for all subreddits with over 1000 users
 from lxml import html
 import requests
-
+# 
 names = []
 sfw = []
 sizes = []
