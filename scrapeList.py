@@ -1,7 +1,7 @@
 #Scrape http://redditlist.com for all subreddits with over 1000 users
 from lxml import html
 import requests
-# 
+#
 names = []
 sfw = []
 sizes = []
@@ -13,7 +13,7 @@ for i in range(1,50):
     topSubs = tree.xpath('//div[@class="span4 listing"]')[1]
     items = topSubs.xpath('.//div[@class="listing-item"]')
     names.extend(topSubs.xpath('.//div[@class="listing-item"]//a/text()'))
-    sfw.extend(topSubs.xpath('.//div[@class="listing-item"]@data'))
+    sfw.extend(topSubs.xpath('.//div[@class="listing-item"]/@data-target-filter'))
     temp = topSubs.xpath('.//div[@class="listing-item"]//span[@class="listing-stat"]/text()')
     sizes.extend(int(str.replace(',','')) for  str in temp)
     end = False
