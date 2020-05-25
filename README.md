@@ -1,5 +1,7 @@
 # Reddit_Sorter
  
- You need to install the following modules from pip:
+ Note this project uses Python 3 and the following libraries:
+ 
  https://pypi.org/project/lxml/
+ 
  https://pypi.org/project/requests/
