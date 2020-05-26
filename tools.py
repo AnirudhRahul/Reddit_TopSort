@@ -1,34 +1,17 @@
-def all_subreddit_map():
-    f = open("topSubreddits.txt", "r")
-    data = dict()
-    index = 0
-    for line in f:
-        vals = line.split()
-        data[vals[0]]=[index,int(vals[2])]
-        index+=1
-    return data
 
-def sfw_subreddit_map():
+#pass the arguements 'nsfw' and 'sfw'
+#leave empty to get all subreddits
+def subreddit_map(type=''):
     f = open("topSubreddits.txt", "r")
     data = dict()
     index = 0
     for line in f:
         vals = line.split()
-        if vals[1]=='sfw':
+        if type=='' or vals[1]==type:
             data[vals[0]]=[index,int(vals[2])]
             index+=1
     return data
 
-def nsfw_subreddit_map():
-    f = open("topSubreddits.txt", "r")
-    data = dict()
-    index = 0
-    for line in f:
-        vals = line.split()
-        if vals[1]=='nsfw':
-            data[vals[0]]=[index,int(vals[2])]
-            index+=1
-    return data
 
-print(sfw_subreddit_map())
-print(len(sfw_subreddit_map()))
+# print(subreddit_map('nsfw'))
+# print(len(subreddit_map('nsfw')))
