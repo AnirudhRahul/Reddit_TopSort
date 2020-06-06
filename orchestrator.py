@@ -8,5 +8,5 @@ import glob
 #     print(i,'%',end='\r')
 print('Parsing Reddit Comments')
 
-import parseComments.parseZst as p
+import parseZst as p
 p.run(tools.subreddit_map())

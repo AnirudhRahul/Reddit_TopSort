@@ -1,3 +1,4 @@
+import array
 
 # pass the arguements 'nsfw' and 'sfw'
 # leave empty to get all subreddits
@@ -12,6 +13,8 @@ def subreddit_map(type=''):
             index += 1
     return data
 
+def makeZeros(length):
+    return array.array('I',[0]*length)
 
 # print(subreddit_map('nsfw'))
 # print(len(subreddit_map('nsfw')))

@@ -1,8 +1,7 @@
 import zstandard as zstd
 import sys
 import ujson as json
-from tools import subreddit_map
-import numpy as np
+from tools import subreddit_map,makeZeros
 from time import time
 
 
@@ -15,14 +14,29 @@ def parseFile():
   processed = 0
   chunks = 0
   skipped = 0
+  size = len(map)
 
+  #Counts the number of comments made on a SR
+  freq_counter = makeZeros(size)
+
+  tic = time()
   for list in readFile():
+
     for l in list:
-      processed+=1
+        if l:
+            # freq_counter[l[0]]+=1
+            processed+=1
+        else:
+            skipped+=1
 
     chunks+=1
     if chunks % 100 == 0:
       print(chunks)
+      # print(freq_counter)
+      # print(processed,skipped)
+  toc = time()
+  print(toc-tic)
+
 
 def grabSR(json):
   i=json.index("subreddit\":\"")+12
@@ -39,7 +53,7 @@ def parseLine(input):
     sub = grabSR(input)
     name = grabFN(input)
     if sub in map:
-      return (map[sub],name)
+      return (map[sub][0],name)
     else:
       return None
   except:
@@ -60,15 +74,11 @@ def readFile(file="RC_2019-12.zst"):
               previous_line=lines[-1]
               # toc = time()
               # print('Decode Time', toc-tic)
-              tic = time()
+              # tic = time()
               lis = [parseLine(line) for line in lines[:-1]]
-              # print(list)
               yield lis
-              toc = time()
-              print('Parse Time', toc-tic)
-
-              # yield map(parseLine, lines)
-              # break
+              # toc = time()
+              # print('Parse Time', toc-tic)
 
 
               # previous_line = parse(chunk, previous_line)
