@@ -1,15 +1,26 @@
 #Scrape http://redditlist.com for all subreddits with over 1000 users
 from lxml import html
 import requests
+import datetime
+
+def reportProgress(progress):
+    # print('CALLED')
+    # if __name__ == "__main__":
+    print('\r'+str(progress)+'%', end='')
+    # else:
+        # yield progress
 
 def main(cutOff=10000):
     names = []
     sfw = []
     sizes = []
     progress=0
+    filename = 'SR_List_{:%Y-%m-%d@%H %M}'.format(datetime.datetime.now())
+    filename = 'subRedditList/'+filename+'.txt'
+    print('Output Location: '+filename)
     for i in range(1,50):
         page = requests.get('http://redditlist.com/all?page='+str(i))
-        yield progress
+        reportProgress(progress)
         progress+=2
         tree = html.fromstring(page.content)
         topSubs = tree.xpath('//div[@class="span4 listing"]')[1]
@@ -26,10 +37,15 @@ def main(cutOff=10000):
         if end:
             break
     progress=99
-    yield progress
-    f = open("topSubreddits.txt", "w")
+    reportProgress(progress)
+    f = open(filename, "w")
     for i in range(len(names)):
         f.write(names[i]+'\t'+sfw[i]+'\t'+str(sizes[i])+'\n')
     f.close()
     progress=100
-    yield progress
+    reportProgress(progress)
+    print()
+
+
+if __name__ == "__main__":
+    main()

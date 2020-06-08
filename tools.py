@@ -1,9 +1,12 @@
 import array
-
+import glob
 # pass the arguements 'nsfw' and 'sfw'
 # leave empty to get all subreddits
 def subreddit_map(type=''):
-    f = open("topSubreddits.txt", "r")
+    subLists = sorted(glob.glob("subRedditList/SR_List*"))
+    print("Using file: "+subLists[-1])
+    #Use latest list
+    f = open(subLists[-1], "r")
     data = dict()
     index = 0
     for line in f:
@@ -16,5 +19,7 @@ def subreddit_map(type=''):
 def makeZeros(length):
     return array.array('I',[0]*length)
 
+if __name__ == "__main__":
+    subreddit_map()
 # print(subreddit_map('nsfw'))
 # print(len(subreddit_map('nsfw')))

@@ -5,12 +5,12 @@ from tools import subreddit_map,makeZeros
 from time import time
 
 
-def run(filter={}):
+def run(filter={}, filename="RC_2019-12.zst"):
   global map
   map=filter
-  parseFile()
+  parseFile(filename)
 
-def parseFile():
+def parseFile(filename):
   processed = 0
   chunks = 0
   skipped = 0
@@ -20,7 +20,7 @@ def parseFile():
   freq_counter = makeZeros(size)
 
   tic = time()
-  for list in readFile():
+  for list in readFile(filename):
 
     for l in list:
         if l:
@@ -59,7 +59,7 @@ def parseLine(input):
   except:
     return None
 
-def readFile(file="RC_2019-12.zst"):
+def readFile(file):
   with open(file, 'rb') as fh:
       dctx = zstd.ZstdDecompressor()
       with dctx.stream_reader(fh) as reader:
