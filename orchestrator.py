@@ -1,6 +1,8 @@
 import os
 import tools
 import argparse
+import glob
+
 parser = argparse.ArgumentParser(
     description='This is a Reddit Comment Scraper program',
 )
@@ -16,10 +18,16 @@ args = parser.parse_args()
 
 input_path = args.File
 print(input_path)
-import scrapeList
-print('Loading list of top subreddits \w scrapeList.py')
-scrapeList.main()
+
+#Must update if there are no valid lists to use
+if len((glob.glob("subRedditList/SR_List*")))==0:
+    args.update=True
+
+if args.update:
+    import scrapeList
+    print('Loading list of top subreddits \w scrapeList.py')
+    scrapeList.main()
 print('Parsing Reddit Comments')
 
 import parseZst as p
-p.run(tools.subreddit_map(input_path))
+p.parseFile(input_path, tools.subreddit_map())
