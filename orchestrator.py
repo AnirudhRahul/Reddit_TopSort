@@ -20,14 +20,14 @@ input_path = args.File
 print(input_path)
 
 #Must update if there are no valid lists to use
-if len((glob.glob("subRedditList/SR_List*")))==0:
+if len((glob.glob("subreddit_lists/SR_List*")))==0:
     args.update=True
 
 if args.update:
-    import scrapeList
-    print('Loading list of top subreddits \w scrapeList.py')
-    scrapeList.main()
+    import create_SR_list
+    print('Loading list of top subreddits with create_SR_list.py')
+    create_SR_list.main()
 print('Parsing Reddit Comments')
 
 import parseZst as p
-p.parseFile(input_path, tools.subreddit_map())
+p.parseFile(input_path, *tools.subreddit_map())

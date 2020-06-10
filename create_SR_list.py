@@ -4,11 +4,7 @@ import requests
 import datetime
 
 def reportProgress(progress):
-    # print('CALLED')
-    # if __name__ == "__main__":
     print('\r'+str(progress)+'%', end='')
-    # else:
-        # yield progress
 
 def main(cutOff=10000):
     names = []
@@ -16,7 +12,7 @@ def main(cutOff=10000):
     sizes = []
     progress=0
     filename = 'SR_List_{:%Y-%m-%d@%H %M}'.format(datetime.datetime.now())
-    filename = 'subRedditList/'+filename+'.txt'
+    filename = 'subreddit_lists/'+filename+'.txt'
     print('Output Location: '+filename)
     for i in range(1,50):
         page = requests.get('http://redditlist.com/all?page='+str(i))

@@ -4,7 +4,7 @@ import os
 # pass the arguements 'nsfw' and 'sfw'
 # leave empty to get all subreddits
 def subreddit_map(type=''):
-    subLists = sorted(glob.glob("subRedditList/SR_List*"))
+    subLists = sorted(glob.glob("subreddit_lists/SR_List*"))
     print("Using file: "+subLists[-1])
     #Use latest list
     f = open(subLists[-1], "r")
@@ -15,7 +15,7 @@ def subreddit_map(type=''):
         if type == '' or vals[1] == type:
             data[vals[0]] = [index, int(vals[2])]
             index += 1
-    return data
+    return data, subLists[-1]
 
 import zstandard as zstd
 
@@ -62,7 +62,14 @@ def getFileSize(file):
     return os.stat(file).st_size
 
 def makeZeros(length):
-    return array.array('I',[0]*length)
+    return array.array('Q',[0]*length)
+
+def listToFile(list,filename):
+    arr = array.array('Q',list)
+    f = open(filename,'ab')
+    arr.tofile(f)
+    f.close()
+    # return array.array('I',list)
 
 if __name__ == "__main__":
     subreddit_map()

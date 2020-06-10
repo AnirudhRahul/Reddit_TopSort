@@ -122,8 +122,9 @@ venv.bak/
 .dmypy.json
 dmypy.json
 # Data storage not meant for VC
-data/
-ratios/
-subRedditList/
+comment_files/*.zst
+output/
+subreddit_lists/
+_teststuff/
 # Pyre type checker
 .pyre/
