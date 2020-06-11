@@ -66,12 +66,15 @@ def makeZeros(length):
 
 def listToFile(list,filename):
     arr = array.array('Q',list)
-    f = open(filename,'ab')
+    f = open(filename,'wb')
     arr.tofile(f)
     f.close()
     # return array.array('I',list)
 
 if __name__ == "__main__":
     subreddit_map()
+
+def grabSlice(str, prefix, suffix):
+    return str[str.index(prefix):str.index(suffix)]
 # print(subreddit_map('nsfw'))
 # print(len(subreddit_map('nsfw')))
