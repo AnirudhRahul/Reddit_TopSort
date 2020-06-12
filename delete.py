@@ -6,7 +6,7 @@ import glob
 
 def clearFiles(outputDir):
     output_folders = filter(os.path.isdir, glob.glob(join(outputDir,'*')))
-    output_folders = sorted(list(output_folders))
+    output_folders = list(output_folders)
     size = len(output_folders)
     i = 1
     for folder in output_folders:
