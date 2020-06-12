@@ -69,7 +69,14 @@ def listToFile(list,filename):
     f = open(filename,'wb')
     arr.tofile(f)
     f.close()
-    # return array.array('I',list)
+
+def fileToList(filename):
+    pth = os.path.abspath(filename)
+    sz = os.path.getsize(pth)//8
+    arr = array.array('Q')
+    with open(filename,'rb') as f:
+        arr.fromfile(f,sz)
+        return list(arr)
 
 if __name__ == "__main__":
     subreddit_map()

@@ -3,9 +3,10 @@ import ujson as json
 import tools
 from time import time
 import os
+from os.path import join
 
 
-def parseFile(filename, map, map_filename):
+def parseFile(filename, map, outputDir):
   lines_processed = 0
   chunks = 0
   bytes_processed = 0
@@ -28,7 +29,6 @@ def parseFile(filename, map, map_filename):
             lines_processed+=1
         else:
             lines_skipped+=1
-            # print(l)
     chunks+=1
     if chunks % (1000) == 0:
       print('\r',str(round(chunks*progress_factor,2)),'%',end='', sep='')
@@ -37,19 +37,18 @@ def parseFile(filename, map, map_filename):
 
   toc = time()
   print('\nTime: '+ str(toc-tic))
-  baseFolder = 'output/'+tools.grabSlice(map_filename,'SR_List','.')+'/'
-  print('Writing Output to file system: '+baseFolder)
+  print('Writing Output to file system: '+outputDir)
   comment_file= tools.grabSlice(filename,'RC','.')
 
   revMap = ['']*size
-  with open(baseFolder+'metadata.txt','a') as f:
-      f.write(filename+'\n')
   for key in map:
     revMap[map[key][0]]=key
 
   for i in range(size):
-      path = baseFolder+str(i)+'-'+revMap[i]
+      path = join(outputDir,str(i)+'-'+revMap[i])
       os.makedirs(path, exist_ok=True)
-      tools.listToFile(sorted(freq_list[i]),path+'/'+comment_file+'.hex')
+      tools.listToFile(freq_list[i],join(path,comment_file+'.hex'))
       print('\r',i+1,'/',size,sep='',end='')
-      # print(freq_list[i])
+
+  with open(join(outputDir,'metadata.txt'),'a') as f:
+      f.write(filename+'\n')
