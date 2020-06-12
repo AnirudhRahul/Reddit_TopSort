@@ -14,14 +14,16 @@ def parseFile(filename, map, outputDir):
   chunkLen = tools.getChunkLen(filename)
   size = len(map)
   total_bytes = tools.getFileSize(filename)
-  print('TOTAL '+str(total_bytes))
+  progress_factor = 9.8*chunkLen/total_bytes
+
+  tic = time()
+
   #Counts the number of comments made on a SR
   freq_counter = tools.makeZeros(size)
+  #Tracks the ID numbesr of individual who commented on a SR
   freq_list = [[] for _ in range(size)]
-  tic = time()
-  progress_factor = 9.8*chunkLen/total_bytes
-  for list in tools.readZst(filename, map):
 
+  for list in tools.readZst(filename, map):
     for l in list:
         if l:
             freq_counter[l[0]]+=1
@@ -32,12 +34,13 @@ def parseFile(filename, map, outputDir):
     chunks+=1
     if chunks % (1000) == 0:
       print('\r',str(round(chunks*progress_factor,2)),'%',end='', sep='')
-      # print(lines_processed,lines_skipped)
-      # print(freq_counter)
 
   toc = time()
   print('\nTime: '+ str(toc-tic))
-  print('Writing Output to file system: '+outputDir)
+
+  print('Lines Processed:', lines_processed)
+  print('Lines Skipped:', lines_skipped)
+  print('\nWriting Output to file system:', outputDir)
   comment_file= tools.grabSlice(filename,'RC','.')
 
   revMap = ['']*size
