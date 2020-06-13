@@ -2,11 +2,12 @@
 from lxml import html
 import requests
 import datetime
+import argparse
 
 def reportProgress(progress):
     print('\r'+str(progress)+'%', end='')
 
-def main(cutOff=10000):
+def main(cutOff=100000, prefix=''):
     names = []
     sfw = []
     sizes = []
@@ -15,7 +16,7 @@ def main(cutOff=10000):
     filename = 'subreddit_lists/'+filename+'.txt'
     print('Output Location: '+filename)
     for i in range(1,50):
-        page = requests.get('http://redditlist.com/all?page='+str(i))
+        page = requests.get(prefix+'http://redditlist.com/all?page='+str(i))
         reportProgress(progress)
         progress+=2
         tree = html.fromstring(page.content)
@@ -44,4 +45,14 @@ def main(cutOff=10000):
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description='This is a Reddit Comment Scraper program',
+    )
+    parser.add_argument('Prefix',
+                        metavar='prefix',
+                        nargs='?',
+                        type=str,
+                        default='',
+                        help='The prefix you want to use for scraping redditlist.com, this is intended to be used with the wayback machine so you can get a list from a specific date')
+    args = parser.parse_args()
+    main(prefix=args.Prefix)
