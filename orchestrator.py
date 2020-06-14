@@ -4,7 +4,7 @@ import argparse
 import glob
 
 parser = argparse.ArgumentParser(
-    description='This is a Reddit Comment Scraper program',
+    description='This is a the orchestrator for Reddit_TopSort most of the other .py scripts can be run from here with a simple flag',
 )
 parser.add_argument('File',
                     metavar='file',
@@ -24,6 +24,12 @@ parser.add_argument('-d',
                        '--delete',
                        action='store_true',
                        help='delete files in the output directory that have already been processed')
+parser.add_argument('-a',
+                       '--analyze',
+                       action='store_true',
+                       help='analyze files in the output directory and calcualte adj matrix')
+
+
 
 args = parser.parse_args()
 
@@ -50,7 +56,11 @@ if args.File:
 if args.merge:
     import merge as m
     m.mergeFiles(outputDir)
-    
+
 if args.delete:
     import delete as d
     d.clearFiles(outputDir)
+
+if args.analyze:
+    import analyze_output as a
+    a.analyze(outputDir,700)
