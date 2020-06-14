@@ -3,6 +3,9 @@ from lxml import html
 import requests
 import datetime
 import argparse
+import tools
+import os
+from os.path import join
 
 def reportProgress(progress):
     print('\r'+str(progress)+'%', end='')
@@ -13,7 +16,7 @@ def main(cutOff=100000, prefix=''):
     sizes = []
     progress=0
     filename = 'SR_List_{:%Y-%m-%d@%H %M}'.format(datetime.datetime.now())
-    filename = 'subreddit_lists/'+filename+'.txt'
+    filename = join('subreddit_lists/',filename+'.txt')
     print('Output Location: '+filename)
     for i in range(1,50):
         page = requests.get(prefix+'http://redditlist.com/all?page='+str(i))
@@ -42,7 +45,15 @@ def main(cutOff=100000, prefix=''):
     progress=100
     reportProgress(progress)
     print()
-
+    map_filename = os.path.basename(filename)
+    map = tools.subreddit_map(name=map_filename)[0]
+    size = len(map)
+    revMap = ['']*size
+    for key in map:
+        revMap[map[key][0]]=key
+    for i in range(size):
+        path = join('output',tools.grabSlice(map_filename,'SR_List','.'),str(i)+'-'+revMap[i])
+        os.makedirs(path, exist_ok=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

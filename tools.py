@@ -3,11 +3,14 @@ import glob
 import os
 # pass the arguements 'nsfw' and 'sfw'
 # leave empty to get all subreddits
-def subreddit_map(type=''):
+def subreddit_map(type='', name=''):
     subLists = sorted(glob.glob("subreddit_lists/SR_List*"))
-    print("Using file: "+subLists[-1])
+    fileToUse = subLists[-1]
+    if name:
+        fileToUse = [file for file in subLists if os.path.basename(file)==os.path.basename(name)][0]
+    print("Using file: "+fileToUse)
     #Use latest list
-    f = open(subLists[-1], "r")
+    f = open(fileToUse, "r")
     data = dict()
     index = 0
     for line in f:
