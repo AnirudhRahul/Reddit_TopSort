@@ -26,8 +26,16 @@ parser.add_argument('-d',
                        help='delete files in the output directory that have already been processed')
 parser.add_argument('-a',
                        '--analyze',
-                       action='store_true',
+                       const=50,
+                       default=-1,
+                       type=int,
+                       nargs='?',
                        help='analyze files in the output directory and calcualte adj matrix')
+
+parser.add_argument('-g',
+                       '--graph',
+                       action='store_true',
+                       help='graph adj_matrix')
 
 
 
@@ -61,6 +69,10 @@ if args.delete:
     import delete as d
     d.clearFiles(outputDir)
 
-if args.analyze:
+if args.analyze > 0:
     import analyze_output as a
-    a.analyze(outputDir,700)
+    a.analyze(outputDir, args.analyze)
+
+if args.graph:
+    import graph as g
+    g.graph(outputDir)

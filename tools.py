@@ -18,7 +18,23 @@ def subreddit_map(type='', name=''):
         if type == '' or vals[1] == type:
             data[vals[0]] = [index, int(vals[2])]
             index += 1
-    return data, subLists[-1]
+    return data, fileToUse
+
+def rev_list(type='', name=''):
+    subLists = sorted(glob.glob("subreddit_lists/SR_List*"))
+    fileToUse = subLists[-1]
+    if name:
+        fileToUse = [file for file in subLists if os.path.basename(file)==os.path.basename(name)][0]
+    print("Using file: "+fileToUse)
+    #Use latest list
+    f = open(fileToUse, "r")
+    data = []
+    for line in f:
+        vals = line.split()
+        if type == '' or vals[1] == type:
+            data.append((vals[0],int(vals[2])))
+    return data
+
 
 import zstandard as zstd
 
