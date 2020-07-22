@@ -1,7 +1,9 @@
 import numpy as np
 import networkx as nx
+from networkx.readwrite import json_graph
 from os.path import join
 from termcolor import colored
+import json
 import tools
 
 acc=3
@@ -12,7 +14,7 @@ def graph(outputDir):
     data = np.load(join(outputDir,'adj_matrix_750.npy'))
     coeff= np.load(join(outputDir,'coeff_matrix_750.npy'))
     data *= coeff ** 0.5
-
+    data = data[:20,:20]
 
 
     # data = coeff
@@ -31,8 +33,6 @@ def graph(outputDir):
     #     print()
     #     print()
 
-    for i in range(nodes):
-        printFloat(map[i][1])
 
     G=nx.DiGraph()
     G.add_nodes_from([i[0] for i in map[:nodes]])
@@ -56,6 +56,15 @@ def graph(outputDir):
 
 
     nx.write_graphml(G, join("graph_output","reddit.graphml"))
+
+    with open(join("website","graph.js"), 'w') as outfile:
+        json_data = json.dumps(json_graph.node_link_data(G))
+        outfile.write("graph = \'")
+        outfile.write(json_data)
+        outfile.write('\'')
+    # with open(join("graph_output","nodes.json"), 'w') as outfile:
+    #     json.dump(G.nodes(), outfile)
+    #     print(G.nodes())
 
     # pos = nx.planar_layout(G)
     # nx.draw_networkx_nodes(G, pos, node_size=[i[1]/2e5 for i in map[:nodes]], node_color='blue')
