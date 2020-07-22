@@ -7,6 +7,9 @@ import tools
 import os
 from os.path import join
 
+# Grabs all if the top reddits from a website with more that 100,000 users
+# Creates a time stamped folder depending and creates a folder for each top subreddits found
+
 def reportProgress(progress):
     print('\r'+str(progress)+'%', end='')
 

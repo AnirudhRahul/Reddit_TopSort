@@ -3,7 +3,8 @@ import tools
 import os
 from os.path import join
 import glob
-
+# Clears all the files in a SR_List output directory
+# without affecting the file structure
 def clearFiles(outputDir):
     output_folders = filter(os.path.isdir, glob.glob(join(outputDir,'*')))
     output_folders = list(output_folders)

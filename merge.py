@@ -3,7 +3,7 @@ import tools
 import os
 from os.path import join
 import glob
-
+# Merges the output created from multiple .zst files of comments
 def mergeFiles(outputDir):
     output_folders = filter(os.path.isdir, glob.glob(join(outputDir,'*')))
     output_folders = list(output_folders)

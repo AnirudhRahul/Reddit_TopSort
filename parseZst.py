@@ -5,6 +5,7 @@ from time import time
 import os
 from os.path import join
 
+# Parses reddit comments from the compressed .zst file format
 
 def parseFile(filename, map, outputDir):
   lines_processed = 0

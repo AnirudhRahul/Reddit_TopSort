@@ -5,6 +5,9 @@ import glob
 from os.path import join
 from distutils.dir_util import copy_tree
 
+# Moves the output for 1 SR_List to another SR_List
+# can be useful if you dont want to parse the zst files multiple times
+
 def copyOver(toDir='',fromDir=''):
     if not (toDir and fromDir):
         raise NameError('Both arguements(toDir and fromDir) are required')

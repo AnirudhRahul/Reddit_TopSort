@@ -6,6 +6,9 @@ import numpy as np
 import glob
 import math
 
+# Analyzes the output from parsing reddit comments
+# to find out which subreddits have the most users in common
+
 def extract_index(path):
     str=os.path.split(path)[1]
     str = str[:str.index('-')]
