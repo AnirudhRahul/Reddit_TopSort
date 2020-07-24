@@ -6,6 +6,7 @@ import argparse
 import tools
 import os
 from os.path import join
+import time
 
 # Grabs all if the top reddits from a website with more that 100,000 users
 # Creates a time stamped folder depending and creates a folder for each top subreddits found
@@ -13,7 +14,7 @@ from os.path import join
 def reportProgress(progress):
     print('\r'+str(progress)+'%', end='')
 
-def main(cutOff=100000, prefix=''):
+def main(cutOff=10000, prefix=''):
     names = []
     sfw = []
     sizes = []
@@ -21,6 +22,7 @@ def main(cutOff=100000, prefix=''):
     filename = 'SR_List_{:%Y-%m-%d@%H %M}'.format(datetime.datetime.now())
     filename = join('subreddit_lists/',filename+'.txt')
     print('Output Location: '+filename)
+    utc =int(time.time())
     for i in range(1,50):
         page = requests.get(prefix+'http://redditlist.com/all?page='+str(i))
         reportProgress(progress)
@@ -42,6 +44,7 @@ def main(cutOff=100000, prefix=''):
     progress=99
     reportProgress(progress)
     f = open(filename, "w")
+    f.write(str(utc)+'\n')
     for i in range(len(names)):
         f.write(names[i]+'\t'+sfw[i]+'\t'+str(sizes[i])+'\n')
     f.close()
