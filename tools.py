@@ -7,15 +7,21 @@ def subreddit_map(type='', name=''):
     subLists = sorted(glob.glob("subreddit_lists/SR_List*"))
     fileToUse = subLists[-1]
     if name:
-        fileToUse = [file for file in subLists if os.path.basename(file)==os.path.basename(name)][0]
+        fileToUse = [file for file in subLists if os.path.basename(name) in os.path.basename(file)][0]
     print("Using file: "+fileToUse)
     #Use latest list
     f = open(fileToUse, "r")
     data = dict()
     index = 0
+    utc_time = None
     for line in f:
+        if utc_time == None:
+            utc_time = int(line)
+            continue
         vals = line.split()
         if type == '' or vals[1] == type:
+            if vals[0] in data:
+                print('DUPE '+vals[0])
             data[vals[0]] = [index, int(vals[2])]
             index += 1
     return data, fileToUse
@@ -24,12 +30,16 @@ def rev_list(type='', name=''):
     subLists = sorted(glob.glob("subreddit_lists/SR_List*"))
     fileToUse = subLists[-1]
     if name:
-        fileToUse = [file for file in subLists if os.path.basename(file)==os.path.basename(name)][0]
+        fileToUse = [file for file in subLists if os.path.basename(name) in os.path.basename(file)][0]
     print("Using file: "+fileToUse)
     #Use latest list
     f = open(fileToUse, "r")
     data = []
+    utc_time = None
     for line in f:
+        if utc_time == None:
+            utc_time = int(line)
+            continue
         vals = line.split()
         if type == '' or vals[1] == type:
             data.append((vals[0],int(vals[2])))
@@ -41,7 +51,7 @@ import zstandard as zstd
 def readZst(file, map):
   with open(file, 'rb') as fh:
       dctx = zstd.ZstdDecompressor()
-      print(dctx.memory_size())
+      print('Byte Size', dctx.memory_size())
       previous_line = ""
       for chunk in dctx.read_to_iter(fh):
           lines = chunk.decode('utf-8').split("\n")

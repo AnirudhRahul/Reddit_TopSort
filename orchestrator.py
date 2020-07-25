@@ -36,6 +36,10 @@ parser.add_argument('-g',
                        '--graph',
                        action='store_true',
                        help='graph adj_matrix')
+parser.add_argument('-i',
+                       '--images',
+                       action='store_true',
+                       help='load subreddit icons for every SR in a SR_List')
 
 
 
@@ -59,11 +63,15 @@ outputDir = os.path.join('output',tools.grabSlice(map_filename,'SR_List','.'))
 if args.File:
     print('Parsing Reddit Comments')
     import parseZst as p
-    p.parseFile(args.File, map, outputDir)
+    p.parseFile(args.File, outputDir)
 
 if args.merge:
     import merge as m
     m.mergeFiles(outputDir)
+
+if args.images:
+    import update_images as img
+    img.load_images(outputDir)
 
 if args.delete:
     import delete as d

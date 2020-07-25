@@ -7,7 +7,8 @@ from os.path import join
 
 # Parses reddit comments from the compressed .zst file format
 
-def parseFile(filename, map, outputDir):
+def parseFile(filename, outputDir):
+  map = tools.subreddit_map(name=outputDir)[0]
   lines_processed = 0
   chunks = 0
   bytes_processed = 0
@@ -18,7 +19,7 @@ def parseFile(filename, map, outputDir):
   progress_factor = 9.8*chunkLen/total_bytes
 
   tic = time()
-
+  print(map)
   #Counts the number of comments made on a SR
   freq_counter = tools.makeZeros(size)
   #Tracks the ID numbesr of individual who commented on a SR
