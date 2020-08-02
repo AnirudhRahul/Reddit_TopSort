@@ -41,13 +41,6 @@ def top_subs(outputDir, size=-1):
     sr_name = [item['name'] for item in top_list]
     sr_size = [item['size'] for item in top_list]
 
-
-    for link in icons:
-        link = link.replace('&amp;','&')
-        print(link)
-    print(icons)
-
-
     data = {'Name': sr_name, 'Commenters': unique_commenters, 'Subreddit Size': sr_size}
     df = pd.DataFrame(data, columns = ['Name', 'Commenters', 'Subreddit Size'])
 
