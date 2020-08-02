@@ -1,6 +1,7 @@
 import array
 import glob
 import os
+import ujson
 # pass the arguements 'nsfw' and 'sfw'
 # leave empty to get all subreddits
 def subreddit_map(type='', name=''):
@@ -10,21 +11,28 @@ def subreddit_map(type='', name=''):
         fileToUse = [file for file in subLists if os.path.basename(name) in os.path.basename(file)][0]
     print("Using file: "+fileToUse)
     #Use latest list
-    f = open(fileToUse, "r")
-    data = dict()
-    index = 0
-    utc_time = None
-    for line in f:
-        if utc_time == None:
-            utc_time = int(line)
-            continue
-        vals = line.split()
-        if type == '' or vals[1] == type:
-            if vals[0] in data:
-                print('DUPE '+vals[0])
-            data[vals[0]] = [index, int(vals[2])]
-            index += 1
-    return data, fileToUse
+    # f = open(fileToUse, "r")
+    with open(fileToUse, 'r') as f:
+        data = ujson.load(f)
+        newMap = {}
+        index = 0
+        for set in data:
+            set['index']=index
+            newMap[set['name']]=set
+            index+=1
+    # index = 0
+    # utc_time = None
+    # for line in f:
+    #     if utc_time == None:
+    #         utc_time = int(line)
+    #         continue
+    #     vals = line.split()
+    #     if type == '' or vals[1] == type:
+    #         if vals[0] in data:
+    #             print('DUPE '+vals[0])
+    #         data[vals[0]] = [index, int(vals[2])]
+    #         index += 1
+        return newMap, fileToUse
 
 def rev_list(type='', name=''):
     subLists = sorted(glob.glob("subreddit_lists/SR_List*"))
@@ -33,18 +41,8 @@ def rev_list(type='', name=''):
         fileToUse = [file for file in subLists if os.path.basename(name) in os.path.basename(file)][0]
     print("Using file: "+fileToUse)
     #Use latest list
-    f = open(fileToUse, "r")
-    data = []
-    utc_time = None
-    for line in f:
-        if utc_time == None:
-            utc_time = int(line)
-            continue
-        vals = line.split()
-        if type == '' or vals[1] == type:
-            data.append((vals[0],int(vals[2])))
-    return data
-
+    with open(fileToUse, 'r') as f:
+        return ujson.load(f), fileToUse
 
 import zstandard as zstd
 
@@ -63,10 +61,11 @@ def readZst(file, map):
 def parseLine(input, map):
   try:
     sub = grabSR(input)
-    name = grabFN(input)
+    user_name = grabFN(input)
     if sub in map:
-      return (map[sub][0],name)
+      return (map[sub]['index'],user_name)
     else:
+      # print(sub)
       return None
   except:
     return None

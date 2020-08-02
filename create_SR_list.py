@@ -14,7 +14,7 @@ import time
 def reportProgress(progress):
     print('\r'+str(progress)+'%', end='')
 
-def main(cutOff=10000, prefix=''):
+def main(cutOff=50000, prefix=''):
     names = []
     sfw = []
     sizes = []

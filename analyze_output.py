@@ -39,14 +39,12 @@ def analyze(outputDir, size=-1):
         print('\r',i,'/',size,sep='',end='')
         i+=1
     print()
-    map = tools.rev_list()
 
+    map = tools.rev_list()[0]
     s = 0
     for i in range(size):
-        if len(map[i]) > 1:
-            s+=map[i][1]
-        else:
-            print(map[i])
+        s+=map[i]['size']
+
     print('Avg # of Reddits', s/total_users)
 
     t = PrettyTable(['SubReddit','# of Commenters','Size','Ratio'])
@@ -55,8 +53,8 @@ def analyze(outputDir, size=-1):
         t.add_row([
         output_folders[i].split('-')[-1],
         len(output_data[i]),
-        map[i][1],
-        len(output_data[i])/map[i][1],
+        map[i]['size'],
+        len(output_data[i])/map[i]['size'],
         ])
     print(t)
 
@@ -124,7 +122,7 @@ def analyze(outputDir, size=-1):
             if len(output_data[i]) == 0 or  len(output_data[j]) == 0:
                 coeff[i, j] = 0
             else:
-                coeff[i, j] = map[i][1]/len(output_data[i]) * map[j][1]/len(output_data[j])
+                coeff[i, j] = map[i]['size']/len(output_data[i]) * map[j]['size']/len(output_data[j])
 
     print()
     adj_filename = 'adj_matrix_' + str(size) + '.npy'

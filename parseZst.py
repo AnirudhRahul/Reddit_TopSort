@@ -8,6 +8,7 @@ from os.path import join
 # Parses reddit comments from the compressed .zst file format
 
 def parseFile(filename, outputDir):
+  # outputDir = 'output/SR_List~subreddits_Jul2020'
   map = tools.subreddit_map(name=outputDir)[0]
   lines_processed = 0
   chunks = 0
@@ -19,7 +20,7 @@ def parseFile(filename, outputDir):
   progress_factor = 9.8*chunkLen/total_bytes
 
   tic = time()
-  print(map)
+  # print(map)
   #Counts the number of comments made on a SR
   freq_counter = tools.makeZeros(size)
   #Tracks the ID numbesr of individual who commented on a SR
@@ -45,12 +46,10 @@ def parseFile(filename, outputDir):
   print('\nWriting Output to file system:', outputDir)
   comment_file= tools.grabSlice(filename,'RC','.')
 
-  revMap = ['']*size
-  for key in map:
-    revMap[map[key][0]]=key
+  revMap = tools.rev_list(name=outputDir)[0]
 
   for i in range(size):
-      path = join(outputDir,str(i)+'-'+revMap[i])
+      path = join(outputDir,str(i)+'-'+revMap[i]['name'])
       os.makedirs(path, exist_ok=True)
       tools.listToFile(freq_list[i],join(path,comment_file+'.hex'))
       print('\r',i+1,'/',size,sep='',end='')
