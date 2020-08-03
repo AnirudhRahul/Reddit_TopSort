@@ -6,8 +6,7 @@ from os.path import join
 import glob
 import urllib.request, json
 import html
-from PIL import Image
-import PIL
+import image_tools
 
 # Clears all the files in a SR_List output directory
 # without affecting the file structure
@@ -53,7 +52,7 @@ def load_images(outputDir):
                     file_ending = icon_url.split('?')[0].split('.')[-1]
                     icon_dir = join(dir,'icon.'+file_ending)
                     urllib.request.urlretrieve(icon_url, icon_dir)
-                    convert_file(icon_dir)
+                    image_tools.convert_file(icon_dir)
 
                     # print((name,os.stat(join(dir,'icon.'+file_ending)).st_size,icon_url))
 
@@ -64,16 +63,3 @@ def load_images(outputDir):
         print('\r',i,'/',size,sep='',end='')
         i+=1
     # print(os.path.basename(outputDir))
-
-def convert_file(dir):
-    img = Image.open(dir)
-    width, height = img.size
-    icon_size = width
-    divider = 1
-    while icon_size>=64:
-        outputDir = join(os.path.dirname(dir),'icon_'+str(icon_size)+'.webp')
-        if divider != 1:
-            img = img.resize((width//divider, height//divider), resample = PIL.Image.LANCZOS)
-        img.save(outputDir,'WEBP')
-        icon_size//=2
-        divider *=2
